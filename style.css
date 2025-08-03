@@ -1,0 +1,463 @@
+/*
+ * Stylesheet for the 2048 Fun Game
+ *
+ * Inspired by the original 2048 game by Gabriele Cirulli (MIT licensed)
+ * with a fresh pastel palette and simple responsive design.
+ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #faf8ef;
+  color: #776e65;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Prevent scrolling on both axes to keep the app fixed on the page */
+  overflow: hidden;
+}
+
+/* Branding styles: place logo and studio name neatly under each screen */
+.branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  /* Ensure the branding does not shrink on small screens */
+  flex-shrink: 0;
+}
+
+.branding img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.branding span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #776e65;
+}
+
+/* Stealth theme adjustments for branding */
+body.stealth .branding span {
+  color: #dcdcdc;
+}
+
+/* Hidden utility class */
+.hidden {
+  display: none !important;
+}
+
+.game-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
+  position: relative;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 48px;
+  margin: 0;
+  color: #776e65;
+}
+
+.scores-container {
+  display: flex;
+  gap: 10px;
+}
+
+.score-container, .best-container {
+  background: #bbada0;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 18px;
+  color: #ffffff;
+  min-width: 60px;
+  text-align: center;
+}
+
+.game-intro {
+  margin: 10px 0 20px 0;
+  font-size: 16px;
+}
+
+.grid-container {
+  position: relative;
+  background: #bbada0;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  width: 100%;
+  padding-bottom: 100%; /* maintain square shape */
+  position: relative;
+}
+
+.tile {
+  position: absolute;
+  width: calc((100% - 45px) / 4);
+  height: calc((100% - 45px) / 4);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+  transition: transform 0.15s ease-in, opacity 0.15s ease-in;
+  /* Add an aesthetic border around tiles to make numbers pop */
+  box-sizing: border-box;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Pastel tile colours */
+.tile-2    { background: #fcefe6; color: #776e65; }
+.tile-4    { background: #f8e6cf; color: #776e65; }
+.tile-8    { background: #f9d5a4; color: #fdfdfd; }
+.tile-16   { background: #f8c18f; color: #fdfdfd; }
+.tile-32   { background: #f6a96d; color: #fdfdfd; }
+.tile-64   { background: #f58663; color: #fdfdfd; }
+.tile-128  { background: #f3c59a; color: #fdfdfd; font-size: 20px; }
+.tile-256  { background: #f2b179; color: #fdfdfd; font-size: 20px; }
+.tile-512  { background: #eccd6e; color: #fdfdfd; font-size: 20px; }
+.tile-1024 { background: #e8c450; color: #fdfdfd; font-size: 16px; }
+.tile-2048 { background: #edc22e; color: #fdfdfd; font-size: 16px; }
+.tile-super { background: #3c3a32; color: #fdfdfd; font-size: 16px; }
+
+.hidden {
+  display: none;
+}
+
+.game-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(238, 228, 218, 0.73);
+  z-index: 100;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.game-message p {
+  font-size: 36px;
+  font-weight: bold;
+  color: #776e65;
+  margin: 0 0 20px 0;
+}
+
+.game-message .lower {
+  display: flex;
+  gap: 10px;
+}
+
+.retry-button, .keep-playing-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+}
+
+.retry-button:hover, .keep-playing-button:hover {
+  background: #9f8b76;
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 36px;
+  }
+  .score-container, .best-container {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+  .tile {
+    font-size: 20px;
+  }
+}
+
+/* Home screen styles */
+/* Layout adjustments for screens
+   - Use flexbox to center content vertically and horizontally
+   - Remove fixed top/bottom margins so the interface scales to fit the viewport
+*/
+#home-screen,
+#settings-screen,
+#game-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px 0;
+  width: 100%;
+}
+
+/* Specific adjustments for the home screen */
+#home-screen {
+  text-align: center;
+}
+
+#home-screen h1 {
+  font-size: 52px;
+  margin-bottom: 20px;
+  color: #776e65;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.home-buttons button {
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+}
+
+.home-buttons button:hover {
+  background: #9f8b76;
+}
+
+/* Custom timer input and button on home screen */
+.custom-timer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.custom-timer input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  flex: 1;
+}
+
+.custom-timer button {
+  padding: 8px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+}
+
+.custom-timer button:hover {
+  background: #9f8b76;
+}
+
+/* Home button inside game screen */
+.home-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+  margin-bottom: 10px;
+}
+
+.home-button:hover {
+  background: #9f8b76;
+}
+
+/* Undo button styling */
+.undo-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+  margin-bottom: 10px;
+  display: inline-block;
+  min-width: 90px;
+}
+
+.undo-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.undo-button:hover:not(:disabled) {
+  background: #9f8b76;
+}
+
+/* Settings screen styles */
+#settings-screen {
+  text-align: left;
+  color: #776e65;
+}
+
+#settings-screen h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.settings-option {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+#settings-screen button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #8f7a66;
+  color: #fdfdfd;
+}
+
+#settings-screen button:hover {
+  background: #9f8b76;
+}
+
+/* Timer display */
+.timer-container {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+/* Adjust game container width inside game screen */
+#game-screen .game-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Revised grid container for background and tiles */
+#game-screen .grid-container {
+  position: relative;
+  background: #bbada0;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding-bottom: 100%; /* square shape */
+}
+
+#game-screen .grid-background, #game-screen .tile-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+#game-screen .grid-background {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+}
+
+#game-screen .grid-cell {
+  background: #cdc1b4;
+  border-radius: 3px;
+}
+
+#game-screen .tile {
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+  transition: transform 0.15s ease-in, opacity 0.15s ease-in;
+  box-sizing: border-box;
+  /* Default theme border color for tiles */
+  border: 3px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Merge animations: the tiles scale up then settle back. Larger tiles use a bigger scale. */
+@keyframes merge-small {
+  0% { transform: translate(var(--x), var(--y)) scale(1); }
+  50% { transform: translate(var(--x), var(--y)) scale(1.15); }
+  100% { transform: translate(var(--x), var(--y)) scale(1); }
+}
+
+@keyframes merge-medium {
+  0% { transform: translate(var(--x), var(--y)) scale(1); }
+  50% { transform: translate(var(--x), var(--y)) scale(1.3); }
+  100% { transform: translate(var(--x), var(--y)) scale(1); }
+}
+
+@keyframes merge-large {
+  0% { transform: translate(var(--x), var(--y)) scale(1); }
+  50% { transform: translate(var(--x), var(--y)) scale(1.5); }
+  100% { transform: translate(var(--x), var(--y)) scale(1); }
+}
+
+/* Stealth theme */
+body.stealth {
+  background: #1e1e1e;
+  color: #dcdcdc;
+}
+
+body.stealth #game-screen .grid-container {
+  background: #3a3a32;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+body.stealth #game-screen .grid-cell {
+  background: #4c473f;
+}
+
+/* In stealth theme, draw darker borders around tiles so numbers remain visible */
+body.stealth #game-screen .tile {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+body.stealth .score-container, body.stealth .best-container {
+  background: #5f5548;
+  color: #ffffff;
+}
+
+body.stealth .tile-2    { background: #3c3a34; color: #dcdcdc; }
+body.stealth .tile-4    { background: #47433f; color: #dcdcdc; }
+body.stealth .tile-8    { background: #5a5148; color: #ffffff; }
+body.stealth .tile-16   { background: #6d5a4f; color: #ffffff; }
+body.stealth .tile-32   { background: #806054; color: #ffffff; }
+body.stealth .tile-64   { background: #935a4f; color: #ffffff; }
+body.stealth .tile-128  { background: #7a6a58; color: #ffffff; font-size: 20px; }
+body.stealth .tile-256  { background: #7f6246; color: #ffffff; font-size: 20px; }
+body.stealth .tile-512  { background: #9d6f50; color: #ffffff; font-size: 20px; }
+body.stealth .tile-1024 { background: #b3765b; color: #ffffff; font-size: 16px; }
+body.stealth .tile-2048 { background: #bf7f5f; color: #ffffff; font-size: 16px; }
+body.stealth .tile-super { background: #c6934c; color: #ffffff; font-size: 16px; }

@@ -1,0 +1,16 @@
+{
+  "name": "2048 Fun Game",
+  "short_name": "2048",
+  "description": "A fresh pastel-themed take on the 2048 puzzle game. Join the numbers and reach the 2048 tile!",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#faf8ef",
+  "theme_color": "#f2b179",
+  "icons": [
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

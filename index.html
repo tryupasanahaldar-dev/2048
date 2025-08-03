@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f2b179" />
+  <title>2048 Fun Game</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="icons/icon-512x512.png">
+</head>
+<body>
+  <!-- Home Screen -->
+  <div id="home-screen">
+    <h1>2048 Fun Game</h1>
+    <p class="game-intro">Join the numbers and get to <strong>2048</strong> tile!</p>
+    <div class="home-buttons">
+      <button id="resume-game-btn" class="hidden">Resume Last Game</button>
+      <button id="new-game-btn">New Game</button>
+      <button id="timed-game-btn">Timed Game (5 mins)</button>
+      <!-- Custom timer input and button -->
+      <div class="custom-timer">
+        <input id="custom-time-input" type="number" min="1" placeholder="Minutes (e.g. 3)">
+        <button id="custom-time-btn">Start Custom Timer</button>
+      </div>
+      <button id="settings-btn">Settings</button>
+      <!-- Exit button -->
+      <button id="exit-btn">Exit</button>
+    </div>
+
+    <!-- Branding for home screen -->
+    <div class="branding">
+      <img src="retroplay.png" alt="RetroPlay Studios logo">
+      <span>RetroPlay Studios</span>
+    </div>
+  </div>
+
+  <!-- Settings Screen -->
+  <div id="settings-screen" class="hidden">
+    <h2>Settings</h2>
+    <div class="settings-option">
+      <label for="theme-select">Theme:</label>
+      <select id="theme-select">
+        <option value="default">Default</option>
+        <option value="stealth">Stealth</option>
+      </select>
+    </div>
+    <div class="settings-option">
+      <label><input type="checkbox" id="sound-toggle"> Sound Effects</label>
+    </div>
+    <div class="settings-option">
+      <label><input type="checkbox" id="vibration-toggle"> Vibration</label>
+    </div>
+    <button id="back-btn">Back</button>
+
+    <!-- Branding for settings screen -->
+    <div class="branding">
+      <img src="retroplay.png" alt="RetroPlay Studios logo">
+      <span>RetroPlay Studios</span>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="hidden">
+    <div class="game-container">
+      <header>
+        <h1>2048 Fun Game</h1>
+        <div class="scores-container">
+          <div class="score-container">0</div>
+          <div class="best-container">0</div>
+        </div>
+      </header>
+      <p class="game-intro">Join the numbers and get to <strong>2048</strong> tile! Use your arrow keys or swipe on mobile.</p>
+      <!-- Button to return to the home screen -->
+      <button id="home-btn" class="home-button">Home</button>
+      <div class="timer-container hidden">
+        Time left: <span id="timer-display">05:00</span>
+      </div>
+      <!-- Undo button: allow the player to undo up to three moves -->
+      <button id="undo-btn" class="undo-button">Undo (3)</button>
+      <div class="grid-container">
+        <div class="grid-background">
+          <!-- 16 cells for grid background -->
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="tile-container"></div>
+      </div>
+      <div class="game-message">
+        <p></p>
+        <div class="lower">
+          <button class="keep-playing-button">Keep going</button>
+          <button class="retry-button">Try again</button>
+        </div>
+      </div>
+      <!-- Branding for game screen -->
+      <div class="branding">
+        <img src="retroplay.png" alt="RetroPlay Studios logo">
+        <span>RetroPlay Studios</span>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
